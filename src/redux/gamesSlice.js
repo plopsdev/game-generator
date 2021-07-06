@@ -1,19 +1,40 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import firebase from "../firebase"
+import {firebase} from "../firebase"
 
-const ref = firebase.firestore().collection("games");
+;
 
 export const getGamesThunk = createAsyncThunk(
     'firebase/getGames',
-    async(_) => {
-        let items = [];
-        const docs = (await ref.get()).docs;
+    async(uId) => {
+
+        let gamesList = [];
+        const docs = (await firebase.firestore().collection("games").get()).docs;
         docs.forEach((doc) => {
-            // let game = doc.data();
-            items.push(doc.data());
+            let game = doc.data()
+            game.id = doc.id; //récupère l'id via firebase (l'id du document)
+            gamesList.push(game);
         });
-        console.log(items)
-        return items
+
+        let notesList = [];
+        const notes = (await firebase.firestore().collection("notes").get()).docs;
+        notes.forEach((note) => {
+            notesList.push(note.data());
+        });
+        //moyen d'intégrer le filtre directement dans le foreach pour conserver que les notes qui nous intéressent
+        for (let note of notesList){
+            if (note.uId === uId){
+                for (let index in gamesList){
+                    if (gamesList[index].id === note.gameId){
+                        gamesList[index].rating = note.rating
+                    }
+                }
+            }
+        }
+        
+
+        console.log(gamesList)
+
+        return gamesList
     }
 )
 
@@ -21,11 +42,16 @@ const gamesSlice = createSlice({
     name: "games",
     initialState: {
         data: null,
-        status: null
+        status: null,
+        uId: null
     },
     reducers: {
         updateRating: (state, {payload}) => {
             state.data[payload.index].rating = payload.rating;
+        },
+        login: (state, {payload}) => {
+            console.log(payload)
+            state.uId = payload;
         }
     },
     extraReducers: {
@@ -42,6 +68,6 @@ const gamesSlice = createSlice({
     }
 })
 
-export const { updateRating } = gamesSlice.actions //to call the actions in the React application
+export const { updateRating, login } = gamesSlice.actions //to call the actions in the React application
 
 export default gamesSlice.reducer;
