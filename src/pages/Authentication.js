@@ -3,6 +3,7 @@ import {firebase} from '../firebase'
 import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/gamesSlice';
+import '../styles/games.css'
 
 const Authentication = () => {
     const dispatch = useDispatch()
@@ -27,7 +28,7 @@ const Authentication = () => {
       }
 
     return(
-        <div>
+        <div className="container">
             <button onClick={() => signInWithGoogle()}>Login with google</button>
         </div>
     )

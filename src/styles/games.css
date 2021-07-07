@@ -1,0 +1,112 @@
+div.container {
+  margin-top: 150px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+div.container div.slides {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+div.container div.slides div.button-container {
+  width: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+div.container div.slides div.button-container img.button {
+  height: 50px;
+  -webkit-filter: drop-shadow(0px 1px 3px #BFBFBF);
+          filter: drop-shadow(0px 1px 3px #BFBFBF);
+  cursor: pointer;
+  -webkit-transition-duration: 0.2s;
+          transition-duration: 0.2s;
+}
+
+div.container div.slides div.button-container img.button:hover {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+}
+
+div.container div.slides img.game-picture {
+  border-radius: 8px;
+}
+
+div.details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+div.details p.description {
+  width: 460px;
+  height: 4em;
+}
+
+div.details span.title {
+  font-weight: 700;
+  font-size: 24px;
+  text-align: left;
+  width: 460px;
+  margin-top: 12px;
+}
+
+div.details span.category {
+  margin-bottom: 12px;
+  width: 460px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #CC637D;
+}
+
+button {
+  border-radius: 6px;
+  width: auto;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  -webkit-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+  cursor: pointer;
+  background-color: #FFFF;
+  border: 2px solid #FF7B9C;
+  margin-top: 16px;
+}
+
+button:hover {
+  border: 2px solid #CC637D;
+}
+/*# sourceMappingURL=games.css.map */

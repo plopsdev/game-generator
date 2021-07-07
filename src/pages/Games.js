@@ -3,9 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { getGamesThunk, updateRating } from "../redux/gamesSlice";
 import Rating from '@material-ui/lab/Rating';
 import {firebase} from "../firebase"
+import '../styles/games.css' 
+import next from '../images/next.svg'
+import previous from '../images/previous.svg'
+import { useHistory } from "react-router-dom";
 
 const Games = () => {
-
+    let history = useHistory()
     const [index, setIndex] = useState(0)
     const { status, data, uId } = useSelector((state) => state.gamesReducer); //games est le reducer, celui qu'on a nommé dans le store (games: gamesReducer)
     const dispatch = useDispatch()
@@ -70,6 +74,7 @@ const Games = () => {
                     })
             }          
         }
+        history.push('/confirmation')
     }
 
     const onRatingChange = (newRating) => {
@@ -94,21 +99,35 @@ const Games = () => {
         );
     }
     return(
-        <div>
-            <img src = {data[index].picture} />
-            <h1 style={({color: 'red'})}>{data[index].name}</h1>
-            <p>{data[index].description}</p>
-            <Rating
-                name="simple-controlled"
-                value={data[index].rating || 0}
-                onChange={(event, newValue) => {
-                    onRatingChange(newValue)
-                }}
-            />
-            { index > 0 && (<button onClick = {onPrevious}>Previous</button>) }
-            { index < data.length - 1 && (<button onClick = {onNext}>Next</button>) }
-            <button onClick = {onConfirm} >Confirmer</button>
+        <div className="container">
+            <div className="slides">
+                <div className="button-container">
+                    { index > 0 && (<img className="button" src={previous} onClick = {onPrevious}/>) }
+                </div>
+                <img className="game-picture" src = {data[index].picture} />
+                <div className="button-container">
+                    { index < data.length - 1 && (<img className="button" src={next} onClick = {onNext}/>) }
+                </div>
+                
+            </div>
+            <div className="details">
+                <span className="title">{data[index].name}</span>
+                <span className="category"> {data[index].category}</span>
+                <p className="description">{data[index].description}</p>
+                <Rating
+                    name="simple-controlled"
+                    value={data[index].rating || 0}
+                    onChange={(event, newValue) => {
+                        onRatingChange(newValue)
+                    }}
+                    size="large"
+                />
+                <button className="confirmation-button" onClick = {onConfirm} >valider ses notes</button>
+            </div>
+                
+            
         </div>
+
     )
      
 }

@@ -8,13 +8,13 @@ export const getGamesThunk = createAsyncThunk(
     async(uId) => {
 
         let gamesList = [];
-        const docs = (await firebase.firestore().collection("games").get()).docs;
+        const docs = (await firebase.firestore().collection("games").orderBy('name').get()).docs;
         docs.forEach((doc) => {
             let game = doc.data()
             game.id = doc.id; //récupère l'id via firebase (l'id du document)
             gamesList.push(game);
         });
-
+        
         let notesList = [];
         const notes = (await firebase.firestore().collection("notes").get()).docs;
         notes.forEach((note) => {

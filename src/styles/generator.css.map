@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "generator.scss"
+    ],
+    "names": [],
+    "file": "generator.css"
+}
