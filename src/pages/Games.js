@@ -15,7 +15,6 @@ const Games = () => {
     const dispatch = useDispatch()
 
     const fetchGames = async() => {
-        console.log('hello ?')
         await dispatch(getGamesThunk(uId))
     }
 
@@ -52,7 +51,7 @@ const Games = () => {
                         rating: game.rating || 0
                     })
                     .then(() => {
-                        console.log("success")
+                        console.log("Salut Dorian :)")
                     })
                     .catch(error => {
                         console.log(error)
@@ -67,7 +66,7 @@ const Games = () => {
                         rating: game.rating || 0
                     })
                     .then(() => {
-                        console.log("success")
+                        console.log("Salut Dorian :)")
                     })
                     .catch(error => {
                         console.log(error)
@@ -82,9 +81,9 @@ const Games = () => {
     }
     
     useEffect(() => {
-        if (status === null){
-            fetchGames()
-        }
+        
+        fetchGames()
+        
     }, [])
 
     if(uId === null){

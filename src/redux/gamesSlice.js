@@ -30,10 +30,6 @@ export const getGamesThunk = createAsyncThunk(
                 }
             }
         }
-        
-
-        console.log(gamesList)
-
         return gamesList
     }
 )
@@ -50,7 +46,6 @@ const gamesSlice = createSlice({
             state.data[payload.index].rating = payload.rating;
         },
         login: (state, {payload}) => {
-            console.log(payload)
             state.uId = payload;
         }
     },

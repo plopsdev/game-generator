@@ -19,7 +19,6 @@ const Authentication = () => {
           .auth()
           .signInWithPopup(provider)
           .then(result => {
-            console.log(result.user.uid)
             dispatch(login(result.user.uid))
             history.push("/games")
           })
@@ -29,7 +28,8 @@ const Authentication = () => {
 
     return(
         <div className="container">
-            <button onClick={() => signInWithGoogle()}>Login with google</button>
+            <h1>Yoooo ça va ou quoi ?</h1>
+            <button onClick={() => signInWithGoogle()}>Login avec Google</button>
         </div>
     )
 }
