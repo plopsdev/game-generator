@@ -9,6 +9,7 @@ import previous from '../images/previous.svg'
 import { useHistory } from "react-router-dom";
 
 const Games = () => {
+    const [test, setTest] = useState({})
     let history = useHistory()
     const [index, setIndex] = useState(0)
     const { status, data, uId } = useSelector((state) => state.gamesReducer); //games est le reducer, celui qu'on a nommé dans le store (games: gamesReducer)
@@ -19,6 +20,8 @@ const Games = () => {
     }
 
     const onNext = () => {
+        test['hello'] = 'world'
+        console.log(test)
         setIndex(index+1)
     }
 
