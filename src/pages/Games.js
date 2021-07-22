@@ -84,11 +84,12 @@ const Games = () => {
     }
     
     useEffect(() => {
-        
-        fetchGames()
+        if (status !== 'fulfilled'){
+            fetchGames()
+        }
         
     }, [])
-
+    console.log(data)
     if(uId === null){
         return(
             <h1>Bien essayé Dorian</h1>

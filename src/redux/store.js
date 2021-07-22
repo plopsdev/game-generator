@@ -1,5 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import gamesReducer from './gamesSlice';
+import generatorReducer from './generatorSlice'
 import storage from 'redux-persist/lib/storage';
 import {
     persistStore,
@@ -19,15 +20,15 @@ const persistConfig = {
     storage
 }
 
-const persistedReducer = persistReducer(persistConfig, gamesReducer)
+const persistedGamesReducer = persistReducer(persistConfig, gamesReducer)
+const persistedGeneratorReducer = persistReducer(persistConfig, generatorReducer)
 
 const store = configureStore({
   reducer: {
-      gamesReducer : persistedReducer,
+    //   gamesReducer : persistedGamesReducer,
+      generatorReducer: persistedGeneratorReducer,
       middleware: getDefaultMiddleware({
-          serializableCheck: {
-              ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-          },
+          serializableCheck: false
       }),
   },
 })

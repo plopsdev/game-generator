@@ -1,1 +1,7 @@
-/* No CSS *//*# sourceMappingURL=generator.css.map */
+img {
+  height: 100%;
+  border-radius: 8px;
+  -webkit-box-shadow: black 0px 0px 13px 0px;
+          box-shadow: black 0px 0px 13px 0px;
+}
+/*# sourceMappingURL=generator.css.map */
