@@ -14,6 +14,7 @@ import mojito from './mojito.gif'
 import zoe from './zoe.gif'
 import antoine_souleve_damien from './antoine_souleve_damien.gif';
 import ecademy from './ecademy.gif'
+import giphy from './giphy.gif'
 
 export{
     antoine_souleve_damien,
@@ -31,5 +32,6 @@ export{
     mich_dodo,
     mojito,
     zoe,
-    ecademy
+    ecademy,
+    giphy
 }

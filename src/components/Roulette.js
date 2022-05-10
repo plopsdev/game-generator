@@ -1,9 +1,11 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import { antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, dorian_pompes, do_claques, ecademy, jojomi_danse, jojo_danse, jojo_detergeant, jojo_ordi, mich_content, mich_danse, mich_dodo, mojito, zoe } from '../static';
+import { antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, dorian_pompes, do_claques, ecademy, giphy, jojomi_danse, jojo_danse, jojo_detergeant, jojo_ordi, mich_content, mich_danse, mich_dodo, mojito, zoe } from '../static';
 import { useHistory } from "react-router-dom";
 
 import '../styles/generator.css' 
-const animations = [antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, do_claques, dorian_pompes, jojo_danse, jojo_detergeant, jojo_ordi, jojomi_danse, mich_content, mich_danse, mich_dodo, mojito, zoe, ecademy]
+const animations = [giphy,
+    //  antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, do_claques, dorian_pompes, jojo_danse, jojo_detergeant, jojo_ordi, jojomi_danse, mich_content, mich_danse, mich_dodo, mojito, ecademy
+    ]
 const songs = [
     'https://media1.vocaroo.com/mp3/1maiZIj3u1f9',
     'https://media1.vocaroo.com/mp3/1iqXY0PHc422',
