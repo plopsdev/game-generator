@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import { antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, dorian_pompes, do_claques, ecademy, jojomi_danse, jojo_danse, jojo_detergeant, jojo_ordi, mich_content, mich_danse, mich_dodo, mojito, zoe } from '../static';
+import { antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, dorian_pompes, do_claques, ecademy, jojomi_danse, jojo_danse, jojo_detergeant, jojo_ordi, mich_content, mich_danse, mich_dodo, mojito, zoe } from '../assets/gifs';
 import { useHistory } from "react-router-dom";
 
 import '../pages/Generator/generator.sass'

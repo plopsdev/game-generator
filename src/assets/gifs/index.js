@@ -15,7 +15,7 @@ import zoe from './zoe.gif'
 import antoine_souleve_damien from './antoine_souleve_damien.gif';
 import ecademy from './ecademy.gif'
 
-export{
+export {
     antoine_souleve_damien,
     dorian_pompes,
     baffes,
@@ -31,5 +31,5 @@ export{
     mich_dodo,
     mojito,
     zoe,
-    ecademy
+    ecademy,
 }
