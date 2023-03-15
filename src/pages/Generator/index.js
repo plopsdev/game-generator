@@ -4,6 +4,7 @@ import Roulette from "../../components/Roulette";
 import { getGamesForGeneratorThunk } from "../../store/slices/generator";
 import '../Generator/generator.sass' 
 import { useHistory } from "react-router-dom";
+import Button from '../../components/Button'
 
 const Generator = () => {
     const [lastGames, setLastGames] = useState([])
@@ -139,12 +140,7 @@ const Generator = () => {
     }
 
     const checkCategory = (category) => {
-        if(categories.includes(category)){
-            return 'lightGray'
-        }
-        else {
-            return 'white'
-        }
+        return categories.includes(category);
     }
 
     if (status === null || status === 'loading'){
@@ -165,12 +161,12 @@ const Generator = () => {
                     })}
                 </ul>
     
-                <button style={{backgroundColor: checkCategory('Multijoueur')}} onClick={() => changeCategory('Multijoueur')}>Multijoueur</button>
-                <button style={{backgroundColor: checkCategory('Local')}} onClick={() => changeCategory('Local')}>Local</button>
-                <button style={{backgroundColor: checkCategory('Switch')}} onClick={() => changeCategory('Switch')}>Switch</button>
-                <button style={{backgroundColor: checkCategory('Autre')}} onClick={() => changeCategory('Autre')}>Autre</button>
+                <Button secondary={checkCategory('Multijoueur')} onClick={() => changeCategory('Multijoueur')}>Multijoueur</Button>
+                <Button secondary={checkCategory('Local')} onClick={() => changeCategory('Local')}>Local</Button>
+                <Button secondary={checkCategory('Switch')} onClick={() => changeCategory('Switch')}>Switch</Button>
+                <Button secondary={checkCategory('Autre')} onClick={() => changeCategory('Autre')}>Autre</Button>
                 
-                <button onClick={() => {
+                <Button onClick={() => {
                     if(Object.entries(categories).length !== 0){
                         let random = randomGenerator()
                         setRandomGame(random)
@@ -178,7 +174,7 @@ const Generator = () => {
                         gameRatingsBuilder() //on réappelle car le pourcentage de chance du jeux qui vient d'être pioché aura diminué
                         setGenerate(true)
                     }
-                } }>Générer !</button>
+                } }>Générer !</Button>
             </div>
         )
         

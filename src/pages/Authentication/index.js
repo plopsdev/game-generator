@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/slices/games';
 import '../Games/games.sass';
+import Button from '../../components/Button';
 
 const Authentication = () => {
     const dispatch = useDispatch()
@@ -29,7 +30,7 @@ const Authentication = () => {
     return(
         <div className="container">
             <h1>Yoooo ça va ou quoi ?</h1>
-            <button onClick={() => signInWithGoogle()}>Login avec Google</button>
+            <Button onClick={() => signInWithGoogle()}>Login avec Google</Button>
         </div>
     )
 }

@@ -3,6 +3,7 @@ import { antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, dorian_pom
 import { useHistory } from "react-router-dom";
 
 import '../pages/Generator/generator.sass'
+import Button from './Button';
 const animations = [
     antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, do_claques, dorian_pompes, jojo_danse, jojo_detergeant, jojo_ordi, jojomi_danse, mich_content, mich_danse, mich_dodo, mojito, zoe, ecademy
     ]
@@ -96,7 +97,7 @@ const Roulette = ({ randomGame, gamesWithProbability, setGenerate }) => {
                 <img src={gameRoulette.picture}/>
                 { isRouletteDone && (
                     <div style={{ position: 'absolute', display: 'flex', width: '100%', justifyContent: 'center' }}>
-                        <button onClick={() => { setGenerate(false); audio.pause() }}>RETOUR A LA ROULETTE</button>
+                        <Button onClick={() => { setGenerate(false); audio.pause() }}>RETOUR A LA ROULETTE</Button>
                     </div>
                 )}
             </div>

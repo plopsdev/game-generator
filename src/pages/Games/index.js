@@ -6,6 +6,7 @@ import {firebase} from "../../firebase"
 import '../Games/games.sass'
 import { next, previous } from '../../assets/images';
 import { useHistory } from "react-router-dom";
+import Button from "../../components/Button";
 
 const Games = () => {
     const [test, setTest] = useState({})
@@ -124,7 +125,7 @@ const Games = () => {
                     }}
                     size="large"
                 />
-                <button className="confirmation-button" onClick = {onConfirm} >valider ses notes</button>
+                <Button onClick={onConfirm}>valider ses notes</Button>
             </div>
                 
             
