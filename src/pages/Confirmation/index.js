@@ -1,7 +1,7 @@
 import React from 'react';
-import '../styles/games.sass';
+import '../Games/games.sass';
 import { useHistory } from "react-router-dom";
-import '../styles/confirmation.sass'
+import '../Confirmation/confirmation.sass'
 
 const Confirmation = () => {
     let history = useHistory()

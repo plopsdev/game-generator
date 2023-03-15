@@ -1,9 +1,8 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Roulette from "../components/Roulette";
-import {firebase} from "../firebase"
-import { getGamesForGeneratorThunk } from "../redux/generatorSlice";
-import '../styles/generator.sass' 
+import Roulette from "../../components/Roulette";
+import { getGamesForGeneratorThunk } from "../../redux/generatorSlice";
+import '../Generator/generator.sass' 
 import { useHistory } from "react-router-dom";
 
 const Generator = () => {

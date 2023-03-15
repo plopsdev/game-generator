@@ -1,9 +1,9 @@
 import React from 'react'
-import {firebase} from '../firebase'
+import {firebase} from '../../firebase'
 import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/gamesSlice';
-import '../styles/games.sass'
+import { login } from '../../redux/gamesSlice';
+import '../Games/games.sass';
 
 const Authentication = () => {
     const dispatch = useDispatch()
