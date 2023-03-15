@@ -1,6 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import gamesReducer from './gamesSlice';
-import generatorReducer from './generatorSlice'
+import gamesReducer from './slices/games';
+import generatorReducer from './slices/generator'
 import storage from 'redux-persist/lib/storage';
 import {
     persistStore,

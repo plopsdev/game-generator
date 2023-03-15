@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Roulette from "../../components/Roulette";
-import { getGamesForGeneratorThunk } from "../../redux/generatorSlice";
+import { getGamesForGeneratorThunk } from "../../store/slices/generator";
 import '../Generator/generator.sass' 
 import { useHistory } from "react-router-dom";
 
