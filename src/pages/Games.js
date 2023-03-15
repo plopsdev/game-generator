@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getGamesThunk, updateRating } from "../redux/gamesSlice";
 import Rating from '@material-ui/lab/Rating';
 import {firebase} from "../firebase"
-import '../styles/games.css' 
+import '../styles/games.sass' 
 import next from '../images/next.svg'
 import previous from '../images/previous.svg'
 import { useHistory } from "react-router-dom";

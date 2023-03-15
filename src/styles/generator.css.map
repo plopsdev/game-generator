@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAmBA,AAAA,GAAG,CAAA;EACC,MAAM,EAAE,IAAI;EACZ,aAAa,EAAE,GAAG;EAClB,UAAU,EAAE,sBAAsB;CACrC",
-    "sources": [
-        "generator.scss"
-    ],
-    "names": [],
-    "file": "generator.css"
-}

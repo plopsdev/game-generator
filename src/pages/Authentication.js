@@ -3,7 +3,7 @@ import {firebase} from '../firebase'
 import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/gamesSlice';
-import '../styles/games.css'
+import '../styles/games.sass'
 
 const Authentication = () => {
     const dispatch = useDispatch()
