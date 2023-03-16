@@ -5,6 +5,7 @@ import { getGamesForGeneratorThunk } from "../../store/slices/generator";
 import '../Generator/generator.sass' 
 import { useHistory } from "react-router-dom";
 import Button from '../../components/Button'
+import Checkbox from "../../components/Checkbox";
 
 const Generator = () => {
     const [lastGames, setLastGames] = useState([])
@@ -160,12 +161,12 @@ const Generator = () => {
                         )
                     })}
                 </ul>
-    
-                <Button secondary={checkCategory('Multijoueur')} onClick={() => changeCategory('Multijoueur')}>Multijoueur</Button>
-                <Button secondary={checkCategory('Local')} onClick={() => changeCategory('Local')}>Local</Button>
-                <Button secondary={checkCategory('Switch')} onClick={() => changeCategory('Switch')}>Switch</Button>
-                <Button secondary={checkCategory('Autre')} onClick={() => changeCategory('Autre')}>Autre</Button>
-                
+
+                <Checkbox checked={checkCategory('Multijoueur')} onClick={() => changeCategory('Multijoueur')}>Multijoueur</Checkbox>
+                <Checkbox checked={checkCategory('Local')} onClick={() => changeCategory('Local')}>Local</Checkbox>
+                <Checkbox checked={checkCategory('Switch')} onClick={() => changeCategory('Switch')}>Switch</Checkbox>
+                <Checkbox checked={checkCategory('Autre')} onClick={() => changeCategory('Autre')}>Autre</Checkbox>
+
                 <Button onClick={() => {
                     if(Object.entries(categories).length !== 0){
                         let random = randomGenerator()

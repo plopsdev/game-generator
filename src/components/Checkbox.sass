@@ -1,0 +1,20 @@
+@import '../styles/colors'
+@import '../styles/variables'
+
+.checkbox
+    display: inline-block
+    &__label
+        display: block
+        padding: 12px 6px
+        border: 2px solid $pink
+        border-radius: 6px
+        background-color: $white
+        cursor: pointer
+        transition-duration: $button_duration
+        &:hover
+            border: 2px solid $dark_pink
+    &__input
+        display: none
+        &:checked + .checkbox__label
+            background-color: lightgray
+            

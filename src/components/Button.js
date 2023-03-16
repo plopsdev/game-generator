@@ -1,11 +1,10 @@
 import './Button.sass';
 
-const Button = ({ children, secondary, ...props }) => {
+const Button = ({ children, ...props }) => {
     return (
         <button
             {...props}
             className="button"
-            style={{ backgroundColor: secondary ? 'lightgray' : 'white' }}
         >
             { children }
         </button>
