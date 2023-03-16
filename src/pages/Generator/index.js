@@ -1,110 +1,73 @@
 import React, {useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Roulette from '../../components/Roulette';
+
+import '../Generator/generator.sass';
 import { getGamesForGeneratorThunk } from '../../store/slices/generator';
-import '../Generator/generator.sass' 
-import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button'
 import Checkbox from '../../components/Checkbox';
+import Roulette from '../../components/Roulette';
 
 const Generator = () => {
-    const [lastGames, setLastGames] = useState([]);
+    const [ lastGames, setLastGames ] = useState([]);
 
-    const [gamesWithProbability, setGamesWithProbability] = useState([]);
-    const [randomGame, setRandomGame] = useState({});
-    const [categories, setCategories] = useState(['Multijoueur']);
-    const [generate, setGenerate] = useState(false);
-    const [gameRoulette, setGameRoulette] = useState({});
-
-    let history = useHistory();
+    const [ gamesWithProbability, setGamesWithProbability] = useState([]);
+    const [ randomGame, setRandomGame ] = useState({});
+    const [ categories, setCategories ] = useState(['Multijoueur']);
+    const [ generate, setGenerate ] = useState(false);
 
     const { status, generatorData } = useSelector((state) => state.generatorReducer);
     
     const dispatch = useDispatch();
 
-    const fetchGames = async() => {
-        await dispatch(getGamesForGeneratorThunk());
-    }
-
     useEffect(() => {
-        if (status !== 'fulfilled') {
-            fetchGames();
-        }
-        // gameRatingsBuilder()
+        if (status === 'fulfilled') return;
+        dispatch(getGamesForGeneratorThunk());
     }, []);
 
-    useEffect(async() => {
+    useEffect(() => {
         gameRatingsBuilder();
-    }, [categories]);
+    }, [ categories ]);
 
-
-    
-    const gameRatingsBuilder = async() => {
-        let gamesList = [];
-        for (let category of categories) {
-            let filteredGames = generatorData.games.filter(game => game.category === category);
-            for (let game of filteredGames) {
-                gamesList.push(game);
-            }
-        }
+    const gameRatingsBuilder = () => {
+        const games = generatorData.games.filter(game => categories.includes(game.category));
         
-        for (let game of gamesList) {
-            let filteredRatings = generatorData.ratings.filter(i => i.gameId === game.id);
-            let total = 0;
-            for (let rating of filteredRatings) {
-                game.ratings.push({uid: rating.uId, rating: rating.rating});
-                total += rating.rating;
-            }
-
-            game.average = total/filteredRatings.length;
-        }
-        //sort by rating
-        gamesList.sort((a, b) => {
-            return b.average - a.average;
-        }); 
-
-        //met à jour les itérations
-        for (let lastGameIndex in lastGames) {
-            let gamesListIndex = gamesList.findIndex(game => game.name === lastGames[lastGameIndex]);
-            gamesList[gamesListIndex].iterationsWithout = parseInt(lastGameIndex) + 1;  //on met l'index +1 comme ca quand c'est 0, c'est 100% de chance
+        for (const game of games) {
+            const ratings = generatorData.ratings.filter(i => i.gameId === game.id);
+            const total = ratings.reduce((acc, curr) => acc += curr.rating, 0);
+            game.average = total / ratings.length;
         }
 
-        gamesList = probabilityCalculator(gamesList);
+        // Sorting by rating
+        games.sort((a, b) => b.average - a.average);
 
-        setGamesWithProbability(gamesList);
+        // Updating the iterations
+        for (const name of lastGames) {
+            const game = games.find(game => game.name === name);
+            game.iterationsWithout++;
+        }
+
+        probabilityCalculator(games);
+        setGamesWithProbability(games);
     }   
 
-    const weightFunction = (x) => {
+    const weightFunction = x => {
         return 1/25 * Math.pow(x, 2) + 1;
     }
 
-    const lastGamesFunction = (x) => {
-        if (x === 0) {
-            return 1;
-        }
-        else {
-            return 1 / (1 + Math.exp(-0.5*(x-10)));
-        } 
+    const lastGamesFunction = x => {
+        if (x === 0) return 1;
+        return 1 / (1 + Math.exp(-0.5 * (x - 10)));
     }
     
-    const probabilityCalculator = (gamesList) => {
-        let sum = 0;
-        for(let game of gamesList) {
-            let weightedResult = weightFunction(game.average) * game.average;
-            let iterationResult = lastGamesFunction(game.iterationsWithout);
-            weightedResult = weightedResult * iterationResult;
-            sum += weightedResult;
-        }
+    const probabilityCalculator = games => {
+        const sum = games.reduce((acc, curr) => {
+            const weightedResult = weightFunction(curr.average) * curr.average;
+            const iterationResult = lastGamesFunction(curr.iterationsWithout);
+            curr.probability = weightedResult * iterationResult;
+            return acc + curr.probability;
+        }, 0);
 
-
-        for (let game of gamesList) {
-            let weightedResult = weightFunction(game.average) * game.average;
-            let iterationResult = lastGamesFunction(game.iterationsWithout);
-            weightedResult = weightedResult * iterationResult;
-            game.probability = weightedResult / sum;
-        }
-
-        return gamesList;
+        games.forEach(game => game.probability /= sum);
     }
 
     const randomGenerator = () => {
