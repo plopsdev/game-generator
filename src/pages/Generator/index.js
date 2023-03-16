@@ -82,14 +82,11 @@ const Generator = () => {
         }
     }
 
-    const changeCategory = (category) => {
+    const changeCategory = category => {
         if (categories.includes(category)) {
-            let filteredCategories = categories.filter(cat => cat !== category);
-            setCategories(filteredCategories);
+            return setCategories(categories.filter(c => c !== category));
         }
-        else {
-            setCategories([...categories, category]);
-        }
+        setCategories([ ...categories, category ]);
     }
 
     const lastGamesIterator = (game) => {
@@ -99,10 +96,6 @@ const Generator = () => {
             newList.pop();
         }
         setLastGames(newList);
-    }
-
-    const checkCategory = (category) => {
-        return categories.includes(category);
     }
 
     if (status === null || status === 'loading') {
@@ -123,10 +116,10 @@ const Generator = () => {
                     })}
                 </ul>
 
-                <Checkbox checked={checkCategory('Multijoueur')} onClick={() => changeCategory('Multijoueur')}>Multijoueur</Checkbox>
-                <Checkbox checked={checkCategory('Local')} onClick={() => changeCategory('Local')}>Local</Checkbox>
-                <Checkbox checked={checkCategory('Switch')} onClick={() => changeCategory('Switch')}>Switch</Checkbox>
-                <Checkbox checked={checkCategory('Autre')} onClick={() => changeCategory('Autre')}>Autre</Checkbox>
+                <Checkbox startChecked onChange={() => changeCategory('Multijoueur')}>Multijoueur</Checkbox>
+                <Checkbox onChange={() => changeCategory('Local')}>Local</Checkbox>
+                <Checkbox onChange={() => changeCategory('Switch')}>Switch</Checkbox>
+                <Checkbox onChange={() => changeCategory('Autre')}>Autre</Checkbox>
 
                 <Button onClick={() => {
                     if(Object.entries(categories).length !== 0){
