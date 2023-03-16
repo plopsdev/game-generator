@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getGamesThunk, updateRating } from '../../store/slices/games';
 import Rating from '@material-ui/lab/Rating';
-import {firebase} from '../../firebase'
-import '../Games/games.sass'
+import {firebase} from '../../firebase';
 import { next, previous } from '../../assets/images';
 import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button';

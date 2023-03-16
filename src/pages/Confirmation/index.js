@@ -1,5 +1,4 @@
 import React from 'react';
-import '../Games/games.sass';
 import { useHistory } from 'react-router-dom';
 import '../Confirmation/confirmation.sass'
 import Button from '../../components/Button';

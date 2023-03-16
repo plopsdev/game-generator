@@ -1,9 +1,8 @@
 import React from 'react'
-import {firebase} from '../../firebase'
+import { firebase } from '../../firebase'
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/slices/games';
-import '../Games/games.sass';
 import Button from '../../components/Button';
 
 const Authentication = () => {
