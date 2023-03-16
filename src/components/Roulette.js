@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import { antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, dorian_pompes, do_claques, ecademy, jojomi_danse, jojo_danse, jojo_detergeant, jojo_ordi, mich_content, mich_danse, mich_dodo, mojito, zoe } from '../assets/gifs';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 import '../pages/Generator/generator.sass'
 import Button from './Button';
+
 const animations = [
     antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, do_claques, dorian_pompes, jojo_danse, jojo_detergeant, jojo_ordi, jojomi_danse, mich_content, mich_danse, mich_dodo, mojito, zoe, ecademy
-    ]
+];
 const songs = [
     'https://media1.vocaroo.com/mp3/1maiZIj3u1f9',
     'https://media1.vocaroo.com/mp3/1iqXY0PHc422',
@@ -23,35 +24,33 @@ const songs = [
     'https://media1.vocaroo.com/mp3/16TXWiGZdnKj',
     'https://media1.vocaroo.com/mp3/1nsqwUk1qAPt',
     'https://media1.vocaroo.com/mp3/17O6SFjaL2KC'
-]
-
+];
 
 const Roulette = ({ randomGame, gamesWithProbability, setGenerate }) => {
     const songsUrl = useMemo(() => {
-        return songs[Math.floor(Math.random()*songs.length)]
-    }, [songs])
+        return songs[Math.floor(Math.random()*songs.length)];
+    }, [songs]);
     const audio = useMemo(() => {
         return new Audio(songsUrl);
     }, [songsUrl]);
     
-    let history = useHistory()
+    let history = useHistory();
 
-    const [gameRoulette, setGameRoulette] = useState({})
-    const [isRouletteDone, setRouletteDone] = useState(false)
+    const [gameRoulette, setGameRoulette] = useState({});
+    const [isRouletteDone, setRouletteDone] = useState(false);
     
     const rouletteFunction = (x) => {
         return (Math.pow(x, 2))/100 + 20
-    }  
+    };
 
     const startRoulette = useCallback((generatedGameIndex, counter, timeout) => {
-        
         setGameRoulette(gamesWithProbability[(counter - 1) % gamesWithProbability.length]);
-        if(counter === Math.floor(gamesWithProbability.length * 3 / gamesWithProbability.length * 35)) {
+        if (counter === Math.floor(gamesWithProbability.length * 3 / gamesWithProbability.length * 35)) {
             generatedGameIndex = gamesWithProbability.findIndex(game => game.name === randomGame.name);
-        }
-        if((counter - 1) % gamesWithProbability.length === generatedGameIndex) {
+        };
+        if ((counter - 1) % gamesWithProbability.length === generatedGameIndex) {
             clearTimeout(timeout);
-            setRouletteDone(true)
+            setRouletteDone(true);
             return;
         }
         counter++;
@@ -75,11 +74,11 @@ const Roulette = ({ randomGame, gamesWithProbability, setGenerate }) => {
         <div style={{
             backgroundImage: `url(${animationUrl})`,
             backgroundColor: 'white',
-            height: "100%",
-            width: "100%",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
+            height: '100%',
+            width: '100%',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
             position: 'fixed',
             padding: 0,
             margin: 0,
@@ -88,7 +87,6 @@ const Roulette = ({ randomGame, gamesWithProbability, setGenerate }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
-            // background: 'red'
         }}>
             <div style={{
                 position: 'relative',
@@ -102,8 +100,7 @@ const Roulette = ({ randomGame, gamesWithProbability, setGenerate }) => {
                 )}
             </div>
         </div>
-        
-    )
+    );
 }
 
-export default Roulette
+export default Roulette;

@@ -1,36 +1,33 @@
-import React, {useEffect, useState} from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getGamesThunk, updateRating } from "../../store/slices/games";
+import React, {useEffect, useState} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getGamesThunk, updateRating } from '../../store/slices/games';
 import Rating from '@material-ui/lab/Rating';
-import {firebase} from "../../firebase"
+import {firebase} from '../../firebase'
 import '../Games/games.sass'
 import { next, previous } from '../../assets/images';
-import { useHistory } from "react-router-dom";
-import Button from "../../components/Button";
+import { useHistory } from 'react-router-dom';
+import Button from '../../components/Button';
 
 const Games = () => {
-    const [test, setTest] = useState({})
-    let history = useHistory()
-    const [index, setIndex] = useState(0)
+    let history = useHistory();
+    const [index, setIndex] = useState(0);
     const { status, data, uId } = useSelector((state) => state.gamesReducer); //games est le reducer, celui qu'on a nommé dans le store (games: gamesReducer)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const fetchGames = async() => {
-        await dispatch(getGamesThunk(uId))
+    const fetchGames = async () => {
+        await dispatch(getGamesThunk(uId));
     }
 
     const onNext = () => {
-        test['hello'] = 'world'
-        console.log(test)
-        setIndex(index+1)
+        setIndex(index + 1);
     }
 
     const onPrevious = () => {
-        setIndex(index-1)
+        setIndex(index - 1);
     }
     //pour l'instant, si on ne met rien, ca met 0 (valeur imposée de base à rating)
-    const onConfirm = async() => {
-        let previousNotes = []
+    const onConfirm = async () => {
+        let previousNotes = [];
         const docs = (await firebase.firestore()
             .collection('notes')
             .where('uId', '==', uId) //si ca existe faut replace en gros
@@ -40,11 +37,11 @@ const Games = () => {
             let note = doc.data();
             note.id = doc.id;
             previousNotes.push(note);
-        })
+        });
 
-        for (let game of data){
-            let note = previousNotes.find(note => note.gameId === game.id)
-            if (note !== undefined){ //ce jeu avait déjà recu une note de la part de cet utilisateur, il faut écraser les données
+        for (let game of data) {
+            let note = previousNotes.find(note => note.gameId === game.id);
+            if (note !== undefined) { //ce jeu avait déjà recu une note de la part de cet utilisateur, il faut écraser les données
                 firebase.firestore()
                     .collection('notes')
                     .doc(note.id)
@@ -54,11 +51,11 @@ const Games = () => {
                         rating: game.rating || 0
                     })
                     .then(() => {
-                        console.log("Salut Dorian :)")
+                        console.log('Salut Dorian :)')
                     })
                     .catch(error => {
                         console.log(error)
-                    })
+                    });
             }
             else { //ce jeu n'avait pas encore recu de note, on écrit une nouvelle donnée
                 firebase.firestore()
@@ -69,39 +66,39 @@ const Games = () => {
                         rating: game.rating || 0
                     })
                     .then(() => {
-                        console.log("Salut Dorian :)")
+                        console.log('Salut Dorian :)')
                     })
                     .catch(error => {
                         console.log(error)
-                    })
+                    });
             }          
         }
-        history.push('/confirmation')
+        history.push('/confirmation');
     }
 
     const onRatingChange = (newRating) => {
-        dispatch(updateRating({index: index, rating: newRating}))
+        dispatch(updateRating({index: index, rating: newRating}));
     }
     
     useEffect(() => {
-        if (status !== 'fulfilled'){
-            fetchGames()
+        if (status !== 'fulfilled') {
+            fetchGames();
         }
         
     }, [])
-    console.log(data)
-    if(uId === null){
-        return(
+    
+    if (uId === null) {
+        return (
             <h1>Bien essayé Dorian</h1>
-        )
+        );
     }
-
-    else if(status === null || status === "loading") {
+    else if (status === null || status === 'loading') {
         return (
             <h1>loading</h1>
         );
     }
-    return(
+
+    return (
         <div className="container">
             <div className="slides">
                 <div className="button-container">
@@ -111,7 +108,6 @@ const Games = () => {
                 <div className="button-container">
                     { index < data.length - 1 && (<img className="button" src={next} onClick = {onNext}/>) }
                 </div>
-                
             </div>
             <div className="details">
                 <span className="title">{data[index].name}</span>
@@ -121,20 +117,16 @@ const Games = () => {
                     name="simple-controlled"
                     value={data[index].rating || 0}
                     onChange={(event, newValue) => {
-                        onRatingChange(newValue)
+                        onRatingChange(newValue);
                     }}
                     size="large"
                 />
                 <Button onClick={onConfirm}>valider ses notes</Button>
             </div>
-                
-            
         </div>
-
-    )
-     
+    );
 }
     
 
 
-export default Games
+export default Games;

@@ -11,22 +11,22 @@ import {
 const persistConfig = {
     key: 'root',
     version: 1,
-    storage
-}
+    storage,
+};
 
-const persistedGamesReducer = persistReducer(persistConfig, gamesReducer)
-const persistedGeneratorReducer = persistReducer(persistConfig, generatorReducer)
+const persistedGamesReducer = persistReducer(persistConfig, gamesReducer);
+const persistedGeneratorReducer = persistReducer(persistConfig, generatorReducer);
 
 const store = configureStore({
-  reducer: {
-    //   gamesReducer : persistedGamesReducer,
-      generatorReducer: persistedGeneratorReducer,
-      middleware: getDefaultMiddleware({
-          serializableCheck: false
-      }),
-  },
-})
+    reducer: {
+        //   gamesReducer : persistedGamesReducer,
+        generatorReducer: persistedGeneratorReducer,
+        middleware: getDefaultMiddleware({
+            serializableCheck: false,
+        }),
+    },
+});
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 
-export default store
+export default store;
