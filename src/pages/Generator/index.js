@@ -27,7 +27,7 @@ const Generator = () => {
 
     useEffect(() => {
         if (status === Status.FULFILLED) updateGames();
-    }, [ status ]);
+    }, [ categories, status ]);
 
     const updateGames = () => {
         const games = generatorData.games.filter(game => categories.includes(game.category));
