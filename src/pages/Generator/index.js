@@ -37,8 +37,6 @@ const Generator = () => {
             const ratings = generatorData.ratings.filter(i => i.gameId === game.id);
             const total = ratings.reduce((acc, curr) => acc += curr.rating, 0);
             game.average = total / ratings.length;
-            // Updating the iterations
-            if (lastGames.includes(game.name)) game.iterationsWithout++;
         }
 
         // Sorting by rating
@@ -49,6 +47,10 @@ const Generator = () => {
 
     const calculateProbabilities = games => {
         const sum = games.reduce((acc, curr) => {
+            // Updating the iterations
+            if (lastGames.includes(curr.name)) curr.iterationsWithout++;
+            else curr.iterationsWithout = 0;
+            // Updating the probability
             const weightedResult = calculateWeight(curr.average) * curr.average;
             const iterationResult = calculateIterationInfluence(curr.iterationsWithout);
             curr.probability = weightedResult * iterationResult;
@@ -73,6 +75,7 @@ const Generator = () => {
         let rand = Math.random();
         for (const game of gamesWithProbability) {
             if (rand < game.probability) {
+                game.iterationsWithout = 0;
                 setRandomGame(game);
                 return game;
             }
@@ -98,7 +101,7 @@ const Generator = () => {
         if (categories.length === 0) return;
         const game = getRandomGame();
         addLastGame(game.name);
-        updateGames(); //on réappelle car le pourcentage de chance du jeux qui vient d'être pioché aura diminué
+        calculateProbabilities(gamesWithProbability); //on réappelle car le pourcentage de chance du jeux qui vient d'être pioché aura diminué
         setGenerated(true);
     } 
 
