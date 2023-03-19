@@ -103,11 +103,11 @@ const Games = () => {
         <div className="container">
             <div className="slides">
                 <div className="button-container">
-                    { index > 0 && (<img className="button" src={previous} onClick = {onPrevious}/>) }
+                    { index > 0 && (<img className="game-button" src={previous} onClick = {onPrevious}/>) }
                 </div>
                 <img className="game-picture" src = {data[index].picture} />
                 <div className="button-container">
-                    { index < data.length - 1 && (<img className="button" src={next} onClick = {onNext}/>) }
+                    { index < data.length - 1 && (<img className="game-button" src={next} onClick = {onNext}/>) }
                 </div>
             </div>
             <div className="details">

@@ -1,7 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import '../Generator/generator.sass';
 import { getGamesForGeneratorThunk } from '../../store/slices/generator';
 import Button from '../../components/Button'
 import Checkbox from '../../components/Checkbox';

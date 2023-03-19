@@ -19,7 +19,7 @@ const persistedGeneratorReducer = persistReducer(persistConfig, generatorReducer
 
 const store = configureStore({
     reducer: {
-        //   gamesReducer : persistedGamesReducer,
+        gamesReducer : persistedGamesReducer,
         generatorReducer: persistedGeneratorReducer,
         middleware: getDefaultMiddleware({
             serializableCheck: false,
