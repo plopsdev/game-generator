@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, dorian_pompes, do_claques, ecademy, jojomi_danse, jojo_danse, jojo_detergeant, jojo_ordi, mich_content, mich_danse, mich_dodo, mojito, zoe } from '../assets/gifs';
-import { useHistory } from 'react-router-dom';
 
-import '../pages/Generator/generator.sass'
+import './Roulette.sass';
 import Button from './Button';
+import { getRandomInteger } from '../utils/numbers';
 
 const animations = [
     antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, do_claques, dorian_pompes, jojo_danse, jojo_detergeant, jojo_ordi, jojomi_danse, mich_content, mich_danse, mich_dodo, mojito, zoe, ecademy
@@ -27,75 +27,55 @@ const songs = [
 ];
 
 const Roulette = ({ randomGame, gamesWithProbability, setGenerate }) => {
-    const songsUrl = useMemo(() => {
-        return songs[Math.floor(Math.random()*songs.length)];
-    }, [songs]);
+    const [ state, setState ] = useState({
+        shownGameIndex: 0,
+        spins: 0,
+    });
+    const target = useMemo(() => ({
+        shownGameIndex: gamesWithProbability.findIndex(game => game.name === randomGame.name),
+        spins: getRandomInteger(3, 6),
+    }), [ getRandomInteger ]);
+    const targetReached = target.spins === state.spins && target.shownGameIndex === state.shownGameIndex;
+
     const audio = useMemo(() => {
+        const songsUrl = songs[Math.floor(Math.random() * songs.length)];
         return new Audio(songsUrl);
-    }, [songsUrl]);
-    
-    let history = useHistory();
-
-    const [gameRoulette, setGameRoulette] = useState({});
-    const [isRouletteDone, setRouletteDone] = useState(false);
-    
-    const rouletteFunction = (x) => {
-        return (Math.pow(x, 2))/100 + 20
-    };
-
-    const startRoulette = useCallback((generatedGameIndex, counter, timeout) => {
-        setGameRoulette(gamesWithProbability[(counter - 1) % gamesWithProbability.length]);
-        if (counter === Math.floor(gamesWithProbability.length * 3 / gamesWithProbability.length * 35)) {
-            generatedGameIndex = gamesWithProbability.findIndex(game => game.name === randomGame.name);
-        };
-        if ((counter - 1) % gamesWithProbability.length === generatedGameIndex) {
-            clearTimeout(timeout);
-            setRouletteDone(true);
-            return;
-        }
-        counter++;
-        clearTimeout(timeout);
-        setTimeout(() => startRoulette(generatedGameIndex, counter, timeout), rouletteFunction(counter));
-    }, []);
+    }, [ songs ]);
 
     const animationUrl = useMemo(() => {
-        return animations[Math.floor(Math.random()*animations.length)];
-    }, [animations]);
+        return animations[Math.floor(Math.random() * animations.length)];
+    }, [ animations ]);
+    
+    const getTimeUntilNextGame = () => {
+        const x = (state.shownGameIndex + 1) + state.spins * gamesWithProbability.length;
+        return Math.pow(x, 2) / 100 + 20;
+    };
+
+    useEffect(() => {
+        if (targetReached) return;
+        setTimeout(() => setState(state => {
+            const index = (state.shownGameIndex + 1) % gamesWithProbability.length;
+            return {
+                shownGameIndex: index,
+                spins: index === 0 ? state.spins + 1 : state.spins,
+            }
+        }), getTimeUntilNextGame());
+    }, [ targetReached, state ]);
     
     useEffect(() => {
+        if (!audio) return;
         audio.play();
-        let counter = 1;
-        let generatedGameIndex = -1;
-        let timeout;       
-        timeout = setTimeout(() => startRoulette(generatedGameIndex, counter, timeout), rouletteFunction(counter));
-    }, []);
+    }, [ audio ]);
 
     return (
-        <div style={{
-            backgroundImage: `url(${animationUrl})`,
-            backgroundColor: 'white',
-            height: '100%',
-            width: '100%',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            position: 'fixed',
-            padding: 0,
-            margin: 0,
-            top: 0,
-            left: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-        }}>
-            <div style={{
-                position: 'relative',
-                height: '25vh'
-            }}>
-                <img src={gameRoulette.picture}/>
-                { isRouletteDone && (
-                    <div style={{ position: 'absolute', display: 'flex', width: '100%', justifyContent: 'center' }}>
-                        <Button onClick={() => { setGenerate(false); audio.pause() }}>RETOUR A LA ROULETTE</Button>
+        <div className="roulette" style={{ backgroundImage: `url(${animationUrl})` }}>
+            <div className="roulette__content">
+                <img src={gamesWithProbability[state.shownGameIndex].picture}/>
+                { targetReached && (
+                    <div className="roulette__buttons">
+                        <Button onClick={() => { setGenerate(false); audio.pause() }}>
+                            RETOUR A LA ROULETTE
+                        </Button>
                     </div>
                 )}
             </div>

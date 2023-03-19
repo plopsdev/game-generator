@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import './Checkbox.sass';
 
 const Checkbox = ({ children, startChecked, onChange }) => {

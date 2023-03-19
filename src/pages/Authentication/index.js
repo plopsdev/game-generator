@@ -1,7 +1,8 @@
-import React from 'react'
-import { firebase } from '../../firebase'
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+import { firebase } from '../../firebase'
 import { login } from '../../store/slices/games';
 import Button from '../../components/Button';
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+
 import '../Confirmation/confirmation.sass'
 import Button from '../../components/Button';
 
 const Confirmation = () => {
-    let history = useHistory();
+    const history = useHistory();
 
     return (
         <div className="confirmation">
