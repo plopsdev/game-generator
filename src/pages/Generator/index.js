@@ -136,7 +136,8 @@ const Generator = () => {
             <Roulette
                 randomGame={randomGame}
                 gamesWithProbability={gamesWithProbability}
-                setGenerate={setGenerated}
+                generate={generate}
+                setGenerated={setGenerated}
             />
         );
     };

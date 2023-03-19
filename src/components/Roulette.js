@@ -26,30 +26,37 @@ const songs = [
     'https://media1.vocaroo.com/mp3/17O6SFjaL2KC'
 ];
 
-const Roulette = ({ randomGame, gamesWithProbability, setGenerate }) => {
+const Roulette = ({ randomGame, gamesWithProbability, generate, setGenerated }) => {
     const [ state, setState ] = useState({
         shownGameIndex: 0,
         spins: 0,
     });
+
     const target = useMemo(() => ({
         shownGameIndex: gamesWithProbability.findIndex(game => game.name === randomGame.name),
-        spins: getRandomInteger(3, 6),
-    }), [ getRandomInteger ]);
-    const targetReached = target.spins === state.spins && target.shownGameIndex === state.shownGameIndex;
-
+        spins: getRandomInteger(2, 4),
+    }), [ getRandomInteger, randomGame ]);
+    
     const audio = useMemo(() => {
         const songsUrl = songs[Math.floor(Math.random() * songs.length)];
         return new Audio(songsUrl);
-    }, [ songs ]);
+    }, [ songs, randomGame ]);
 
     const animationUrl = useMemo(() => {
         return animations[Math.floor(Math.random() * animations.length)];
-    }, [ animations ]);
-    
+    }, [ animations, randomGame ]);
+
+
     const getTimeUntilNextGame = () => {
         const x = (state.shownGameIndex + 1) + state.spins * gamesWithProbability.length;
         return Math.pow(x, 2) / 100 + 20;
     };
+
+    const targetReached = target.spins === state.spins && target.shownGameIndex === state.shownGameIndex;
+
+    useEffect(() => {
+        setState(state => ({ shownGameIndex: state.shownGameIndex, spins: 0 }));
+    }, [ randomGame ]);
 
     useEffect(() => {
         if (targetReached) return;
@@ -60,7 +67,7 @@ const Roulette = ({ randomGame, gamesWithProbability, setGenerate }) => {
                 spins: index === 0 ? state.spins + 1 : state.spins,
             }
         }), getTimeUntilNextGame());
-    }, [ targetReached, state ]);
+    }, [ state.shownGameIndex, state.spins ]);
     
     useEffect(() => {
         if (!audio) return;
@@ -73,8 +80,11 @@ const Roulette = ({ randomGame, gamesWithProbability, setGenerate }) => {
                 <img src={gamesWithProbability[state.shownGameIndex].picture}/>
                 { targetReached && (
                     <div className="roulette__buttons">
-                        <Button onClick={() => { setGenerate(false); audio.pause() }}>
+                        <Button onClick={() => { setGenerated(false); audio.pause() }}>
                             RETOUR A LA ROULETTE
+                        </Button>
+                        <Button onClick={generate}>
+                            Générer !
                         </Button>
                     </div>
                 )}
