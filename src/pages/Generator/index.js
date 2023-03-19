@@ -21,21 +21,21 @@ const Generator = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (status === 'fulfilled') return;
+        if (status === Status.FULFILLED) return;
         dispatch(getGamesForGeneratorThunk());
     }, []);
 
     useEffect(() => {
-        updateGames();
-    }, [ categories ]);
+        if (status === Status.FULFILLED) updateGames();
+    }, [ status ]);
 
     const updateGames = () => {
         const games = generatorData.games.filter(game => categories.includes(game.category));
-        
-        for (const game of games) {
-            const ratings = generatorData.ratings.filter(i => i.gameId === game.id);
+
+        for (let i = 0; i < games.length; i++) {
+            const ratings = generatorData.ratings.filter(rating => rating.gameId === games[i].id);
             const total = ratings.reduce((acc, curr) => acc += curr.rating, 0);
-            game.average = total / ratings.length;
+            games[i] = { ...games[i], average: total / ratings.length };
         }
 
         // Sorting by rating

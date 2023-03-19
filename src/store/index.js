@@ -1,21 +1,12 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage';
+
 import gamesReducer from './slices/games';
 import generatorReducer from './slices/generator'
-import storage from 'redux-persist/lib/storage';
-import {
-    persistStore,
-    persistReducer,
-} from 'redux-persist'
 
-
-const persistConfig = {
-    key: 'root',
-    version: 1,
-    storage,
-};
-
-const persistedGamesReducer = persistReducer(persistConfig, gamesReducer);
-const persistedGeneratorReducer = persistReducer(persistConfig, generatorReducer);
+const persistedGamesReducer = persistReducer({ key: 'games', version: 1, storage }, gamesReducer);
+const persistedGeneratorReducer = persistReducer({ key: 'generator', version: 1, storage }, generatorReducer);
 
 const store = configureStore({
     reducer: {
