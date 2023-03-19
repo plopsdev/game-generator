@@ -1,0 +1,16 @@
+@import '../styles/colors'
+@import '../styles/variables'
+    
+.button
+    border-radius: 6px
+    min-width: 8em
+    padding: 1em 1.5em
+    transition: all $button_duration ease-in-out
+    cursor: pointer
+    color: $on-primary
+    background-color: $primary
+    border: none
+    &:hover
+        background-color: $dark_primary
+    &.disabled
+        background-color: $disabled !important

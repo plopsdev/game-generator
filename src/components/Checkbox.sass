@@ -1,0 +1,22 @@
+@import '../styles/colors'
+@import '../styles/variables'
+
+.checkbox
+    display: inline-block
+    min-width: 8em
+    &__label
+        display: block
+        padding: 1em 1.5em
+        border-radius: 6px
+        background-color: $primary
+        text-align: center
+        cursor: pointer
+        color: $on-primary
+        transition: all $button_duration ease-in-out
+        &:hover
+            background-color: $dark_primary
+    &__input
+        display: none
+        &:checked + .checkbox__label
+            background-color: $dark_primary
+            
