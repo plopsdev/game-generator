@@ -3,18 +3,20 @@
 
 .checkbox
     display: inline-block
+    min-width: 8em
     &__label
         display: block
-        padding: 12px 6px
-        border: 2px solid $pink
+        padding: 1em 1.5em
         border-radius: 6px
-        background-color: $white
+        background-color: $primary
+        text-align: center
         cursor: pointer
-        transition-duration: $button_duration
+        color: $on-primary
+        transition: all $button_duration ease-in-out
         &:hover
-            border: 2px solid $dark_pink
+            background-color: $dark_primary
     &__input
         display: none
         &:checked + .checkbox__label
-            background-color: lightgray
+            background-color: $dark_primary
             

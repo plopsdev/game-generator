@@ -30,7 +30,7 @@ const Authentication = () => {
     return (
         <div className="container">
             <h1>Yoooo ça va ou quoi ?</h1>
-            <Button onClick={() => signInWithGoogle()}>Login avec Google</Button>
+            <Button style={{ marginTop: '1em' }} onClick={() => signInWithGoogle()}>Login avec Google</Button>
         </div>
     );
 }

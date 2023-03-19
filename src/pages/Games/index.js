@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Rating from '@material-ui/lab/Rating';
 
+import './games.sass';
 import { next, previous } from '../../assets/images';
 import { firebase } from '../../firebase';
 import { getGamesThunk, updateRating } from '../../store/slices/games';
@@ -100,7 +101,7 @@ const Games = () => {
     }
 
     return (
-        <div className="container">
+        <div className="games-page container">
             <div className="slides">
                 <div className="button-container">
                     { index > 0 && (<img className="game-button" src={previous} onClick = {onPrevious}/>) }
@@ -117,12 +118,12 @@ const Games = () => {
                 <Rating
                     name="simple-controlled"
                     value={data[index].rating || 0}
-                    onChange={(event, newValue) => {
+                    onChange={(_, newValue) => {
                         onRatingChange(newValue);
                     }}
                     size="large"
                 />
-                <Button onClick={onConfirm}>Valider ses notes</Button>
+                <Button style={{ marginTop: '1em' }} onClick={onConfirm}>Valider ses notes</Button>
             </div>
         </div>
     );

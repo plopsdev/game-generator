@@ -1,12 +1,14 @@
 import React, {useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import './generator.sass';
 import { getGamesForGeneratorThunk } from '../../store/slices/generator';
 import Button from '../../components/Button'
 import Checkbox from '../../components/Checkbox';
 import Roulette from '../../components/Roulette';
 import GameCategory from '../../enums/GameCategory';
 import Status from '../../enums/Status';
+import GameStats from '../../components/GameStats';
 
 const Generator = () => {
     const [ lastGames, setLastGames ] = useState([]);
@@ -38,9 +40,6 @@ const Generator = () => {
             games[i] = { ...games[i], average: total / ratings.length };
         }
 
-        // Sorting by rating
-        games.sort((a, b) => b.average - a.average);
-
         calculateProbabilities(games);
     };
 
@@ -57,6 +56,9 @@ const Generator = () => {
         }, 0);
 
         games.forEach(game => game.probability /= sum);
+
+        // Sorting by probability
+        games.sort((a, b) => b.probability - a.probability);
 
         setGamesWithProbability(games);
     };
@@ -97,7 +99,6 @@ const Generator = () => {
     };
 
     const generate = () => {
-        if (categories.length === 0) return;
         const game = getRandomGame();
         addLastGame(game.name);
         calculateProbabilities(gamesWithProbability); //on réappelle car le pourcentage de chance du jeux qui vient d'être pioché aura diminué
@@ -114,19 +115,18 @@ const Generator = () => {
 
     if (!generated) {
         return (
-            <div>
-                <ul>
+            <div className="generator">
+                <div className="generator__buttons">
+                    { Object.values(GameCategory).map(category => (
+                        <Checkbox key={category} startChecked={isChecked(category)} onChange={checked => changeCategory(category, checked)}>{category}</Checkbox>
+                    )) }
+                    <Button disabled={categories.length === 0} onClick={generate}>Générer !</Button>
+                </div>
+                <div className="generator__games">
                     { gamesWithProbability.map(game => (
-                            <li key={game.id}>
-                                {game.name} : {game.average.toFixed(2)} avec une probabilité de {(game.probability * 100).toFixed(2)} %, itérations : {game.iterationsWithout}
-                            </li>
-                        )
-                    ) }
-                </ul>
-                { Object.values(GameCategory).map(category => (
-                    <Checkbox key={category} startChecked={isChecked(category)} onChange={checked => changeCategory(category, checked)}>{category}</Checkbox>
-                )) }
-                <Button onClick={generate}>Générer !</Button>
+                        <GameStats key={game.id} game={game}></GameStats>
+                    )) }
+                </div>
             </div>
         )
         

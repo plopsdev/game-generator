@@ -1,0 +1,23 @@
+@import '../styles/colors'
+    
+.game-stats
+    position: relative
+    overflow: hidden
+    z-index: 0
+    &::after
+        content: ''
+        position: absolute
+        display: block
+        inset: -100% 35%
+        background-color: transparentize($primary, 0.15)
+        transform: rotate(-55deg) translateX(-145%)
+    &__image
+        width: 100%
+        vertical-align: bottom
+    &__probability
+        position: absolute
+        bottom: 8%
+        left: 4%
+        color: white
+        font-size: 20px
+        z-index: 1

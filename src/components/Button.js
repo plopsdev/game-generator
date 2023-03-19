@@ -1,10 +1,11 @@
 import './Button.sass';
 
-const Button = ({ children, ...props }) => {
+const Button = ({ children, disabled, ...props }) => {
     return (
         <button
             {...props}
-            className="button"
+            className={disabled ? 'button disabled' : 'button'}
+            disabled={disabled}
         >
             { children }
         </button>
