@@ -13,7 +13,7 @@ const Generator = () => {
     const [ gamesWithProbability, setGamesWithProbability] = useState([]);
     const [ randomGame, setRandomGame ] = useState({});
     const [ categories, setCategories ] = useState(['Multijoueur']);
-    const [ generate, setGenerate ] = useState(false);
+    const [ generated, setGenerated ] = useState(false);
 
     const { status, generatorData } = useSelector((state) => state.generatorReducer);
     
@@ -25,125 +25,118 @@ const Generator = () => {
     }, []);
 
     useEffect(() => {
-        gameRatingsBuilder();
+        updateGames();
     }, [ categories ]);
 
-    const gameRatingsBuilder = () => {
+    const updateGames = () => {
         const games = generatorData.games.filter(game => categories.includes(game.category));
         
         for (const game of games) {
             const ratings = generatorData.ratings.filter(i => i.gameId === game.id);
             const total = ratings.reduce((acc, curr) => acc += curr.rating, 0);
             game.average = total / ratings.length;
+            // Updating the iterations
+            if (lastGames.includes(game.name)) game.iterationsWithout++;
         }
 
         // Sorting by rating
         games.sort((a, b) => b.average - a.average);
 
-        // Updating the iterations
-        for (const name of lastGames) {
-            const game = games.find(game => game.name === name);
-            game.iterationsWithout++;
-        }
+        calculateProbabilities(games);
+    };
 
-        probabilityCalculator(games);
-        setGamesWithProbability(games);
-    }   
-
-    const weightFunction = x => {
-        return 1/25 * Math.pow(x, 2) + 1;
-    }
-
-    const lastGamesFunction = x => {
-        if (x === 0) return 1;
-        return 1 / (1 + Math.exp(-0.5 * (x - 10)));
-    }
-    
-    const probabilityCalculator = games => {
+    const calculateProbabilities = games => {
         const sum = games.reduce((acc, curr) => {
-            const weightedResult = weightFunction(curr.average) * curr.average;
-            const iterationResult = lastGamesFunction(curr.iterationsWithout);
+            const weightedResult = calculateWeight(curr.average) * curr.average;
+            const iterationResult = calculateIterationInfluence(curr.iterationsWithout);
             curr.probability = weightedResult * iterationResult;
             return acc + curr.probability;
         }, 0);
 
         games.forEach(game => game.probability /= sum);
-    }
 
-    const randomGenerator = () => {
+        setGamesWithProbability(games);
+    };
+
+    const calculateWeight = x => {
+        return 1/25 * Math.pow(x, 2) + 1;
+    };
+
+    const calculateIterationInfluence = x => {
+        if (x === 0) return 1;
+        return 1 / (1 + Math.exp(-0.5 * (x - 10)));
+    };
+
+    const getRandomGame = () => {
         let rand = Math.random();
-        for (var i = 0; i < gamesWithProbability.length; i++) {
-            var game = gamesWithProbability[i];
-            if(rand < game.probability) {
+        for (const game of gamesWithProbability) {
+            if (rand < game.probability) {
+                setRandomGame(game);
                 return game;
             }
             rand -= game.probability;
-            
         }
-    }
+    };
 
-    const changeCategory = category => {
-        if (categories.includes(category)) {
-            return setCategories(categories.filter(c => c !== category));
-        }
-        setCategories([ ...categories, category ]);
-    }
+    const changeCategory = (category, includeCategory) => {
+        return setCategories(includeCategory
+            ? [ ...categories, category ]
+            : categories.filter(c => c !== category)
+        );
+    };
 
-    const lastGamesIterator = (game) => {
-        let newList = lastGames;
-        newList.unshift(game);
-        if (Object.entries(lastGames).length === 20) {
-            newList.pop();
-        }
-        setLastGames(newList);
-    }
+    const isChecked = category => categories.includes(category);
+ 
+    const addLastGame = (game) => {
+        lastGames.unshift(game);
+        setLastGames(lastGames.slice(0, 20));
+    };
+
+    const generate = () => {
+        if (categories.length === 0) return;
+        const game = getRandomGame();
+        addLastGame(game.name);
+        updateGames(); //on réappelle car le pourcentage de chance du jeux qui vient d'être pioché aura diminué
+        setGenerated(true);
+    } 
 
     if (status === null || status === 'loading') {
-        return(
+        return (
             <div>
-                loading
+                Loading
             </div>
         );
-    }
-    if (!generate) {
+    };
+
+    if (!generated) {
         return (
             <div>
                 <ul>
-                    {gamesWithProbability.map(game => {
-                        return(
-                            <li key={game.id}>{game.name} : {game.average.toFixed(2)} avec une probabilité de {(game.probability * 100).toFixed(2)} %, itérations : {game.iterationsWithout}</li>
-                        );
-                    })}
-                </ul>
-
-                <Checkbox startChecked onChange={() => changeCategory('Multijoueur')}>Multijoueur</Checkbox>
-                <Checkbox onChange={() => changeCategory('Local')}>Local</Checkbox>
-                <Checkbox onChange={() => changeCategory('Switch')}>Switch</Checkbox>
-                <Checkbox onChange={() => changeCategory('Autre')}>Autre</Checkbox>
-
-                <Button onClick={() => {
-                    if(Object.entries(categories).length !== 0){
-                        let random = randomGenerator();
-                        setRandomGame(random);
-                        lastGamesIterator(random.name);
-                        gameRatingsBuilder(); //on réappelle car le pourcentage de chance du jeux qui vient d'être pioché aura diminué
-                        setGenerate(true);
+                    {
+                        gamesWithProbability.map(game => (
+                            <li key={game.id}>
+                                {game.name} : {game.average.toFixed(2)} avec une probabilité de {(game.probability * 100).toFixed(2)} %, itérations : {game.iterationsWithout}
+                            </li>
+                        ))
                     }
-                } }>Générer !</Button>
+                </ul>
+                <Checkbox startChecked={isChecked('Multijoueur')} onChange={checked => changeCategory('Multijoueur', checked)}>Multijoueur</Checkbox>
+                <Checkbox startChecked={isChecked('Local')} onChange={checked => changeCategory('Local', checked)}>Local</Checkbox>
+                <Checkbox startChecked={isChecked('Switch')} onChange={checked => changeCategory('Switch', checked)}>Switch</Checkbox>
+                <Checkbox startChecked={isChecked('Autre')} onChange={checked => changeCategory('Autre', checked)}>Autre</Checkbox>
+                <Button onClick={generate}>Générer !</Button>
             </div>
         )
         
-    }
-    else {
-
-        return(
+    } else {
+        return (
             <Roulette
                 randomGame={randomGame}
                 gamesWithProbability={gamesWithProbability}
-                setGenerate={setGenerate}
+                setGenerate={setGenerated}
             />
         );
-    }
+    };
 }
 
 export default Generator;
