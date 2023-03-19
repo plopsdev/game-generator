@@ -122,7 +122,7 @@ const Games = () => {
                     }}
                     size="large"
                 />
-                <Button onClick={onConfirm}>valider ses notes</Button>
+                <Button onClick={onConfirm}>Valider ses notes</Button>
             </div>
         </div>
     );

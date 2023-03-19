@@ -81,7 +81,7 @@ const Roulette = ({ randomGame, gamesWithProbability, generate, setGenerated }) 
                 { targetReached && (
                     <div className="roulette__buttons">
                         <Button onClick={() => { setGenerated(false); audio.pause() }}>
-                            RETOUR A LA ROULETTE
+                            RETOUR À LA ROULETTE
                         </Button>
                         <Button onClick={generate}>
                             Générer !
