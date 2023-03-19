@@ -6,6 +6,7 @@ import {firebase} from '../../firebase';
 import { next, previous } from '../../assets/images';
 import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
+import Status from '../../enums/Status';
 
 const Games = () => {
     let history = useHistory();
@@ -80,7 +81,7 @@ const Games = () => {
     }
     
     useEffect(() => {
-        if (status !== 'fulfilled') {
+        if (status !== Status.FULFILLED) {
             fetchGames();
         }
         
@@ -91,9 +92,9 @@ const Games = () => {
             <h1>Bien essayé Dorian</h1>
         );
     }
-    else if (status === null || status === 'loading') {
+    else if (status === null || status === Status.LOADING) {
         return (
-            <h1>loading</h1>
+            <h1>{ Status.LOADING }</h1>
         );
     }
 

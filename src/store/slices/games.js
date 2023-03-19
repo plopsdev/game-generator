@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import Status from '../../enums/Status';
 import {firebase} from '../../firebase';
 
 export const getGamesThunk = createAsyncThunk(
@@ -48,14 +49,14 @@ const gamesSlice = createSlice({
     },
     extraReducers: {
         [getGamesThunk.pending]: (state, action) => {
-            state.status = 'loading';
+            state.status = Status.LOADING;
         },
         [getGamesThunk.fulfilled]: (state, action) => {
             state.data = action.payload;
-            state.status = 'fulfilled';
+            state.status = Status.FULFILLED;
         },
         [getGamesThunk.rejected]: (state, _action) => {
-            state.status = 'error';
+            state.status = Status.ERROR;
         }
     }
 });

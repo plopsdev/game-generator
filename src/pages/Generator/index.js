@@ -6,13 +6,15 @@ import { getGamesForGeneratorThunk } from '../../store/slices/generator';
 import Button from '../../components/Button'
 import Checkbox from '../../components/Checkbox';
 import Roulette from '../../components/Roulette';
+import GameCategory from '../../enums/GameCategory';
+import Status from '../../enums/Status';
 
 const Generator = () => {
     const [ lastGames, setLastGames ] = useState([]);
 
     const [ gamesWithProbability, setGamesWithProbability] = useState([]);
     const [ randomGame, setRandomGame ] = useState({});
-    const [ categories, setCategories ] = useState(['Multijoueur']);
+    const [ categories, setCategories ] = useState([ GameCategory.MULTIJOUEUR ]);
     const [ generated, setGenerated ] = useState(false);
 
     const { status, generatorData } = useSelector((state) => state.generatorReducer);
@@ -100,10 +102,10 @@ const Generator = () => {
         setGenerated(true);
     } 
 
-    if (status === null || status === 'loading') {
+    if (status === null || status === Status.LOADING) {
         return (
             <div>
-                Loading
+                { Status.LOADING }
             </div>
         );
     };
@@ -112,18 +114,16 @@ const Generator = () => {
         return (
             <div>
                 <ul>
-                    {
-                        gamesWithProbability.map(game => (
+                    { gamesWithProbability.map(game => (
                             <li key={game.id}>
                                 {game.name} : {game.average.toFixed(2)} avec une probabilité de {(game.probability * 100).toFixed(2)} %, itérations : {game.iterationsWithout}
                             </li>
-                        ))
-                    }
+                        )
+                    ) }
                 </ul>
-                <Checkbox startChecked={isChecked('Multijoueur')} onChange={checked => changeCategory('Multijoueur', checked)}>Multijoueur</Checkbox>
-                <Checkbox startChecked={isChecked('Local')} onChange={checked => changeCategory('Local', checked)}>Local</Checkbox>
-                <Checkbox startChecked={isChecked('Switch')} onChange={checked => changeCategory('Switch', checked)}>Switch</Checkbox>
-                <Checkbox startChecked={isChecked('Autre')} onChange={checked => changeCategory('Autre', checked)}>Autre</Checkbox>
+                { Object.values(GameCategory).map(category => (
+                    <Checkbox key={category} startChecked={isChecked(category)} onChange={checked => changeCategory(category, checked)}>{category}</Checkbox>
+                )) }
                 <Button onClick={generate}>Générer !</Button>
             </div>
         )
