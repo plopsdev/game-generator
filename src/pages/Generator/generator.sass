@@ -26,24 +26,27 @@
     //         grid-template-columns: repeat(2, 1fr)
     //     @media (max-width: 900px)
     //         grid-template-columns: repeat(1, 1fr)
-    &__game
-        display: inline-block
-        height: 17vh
-        overflow: hidden
-        vertical-align: bottom
-        border: solid $background
-        border-width: 0 0 8px 8px
-        box-sizing: border-box
-        &:first-child
-            border-left: 0
-            div
-                float: right
-        div
-            padding: 35px 50px
+    &__games
+        &-row:first-child .generator__games-game:first-child div
+            float: left
+        &-game
+            display: inline-block
+            height: 17vh
+            overflow: hidden
+            vertical-align: bottom
+            border: solid $background
+            border-width: 0 0 8px 8px
             box-sizing: border-box
-        img
-            display: block
-            // margin: 0 auto
-        div, img
-            height: 100%
+            &:first-child // Targetting all the "leftover" games
+                border-left: 0
+                div
+                    float: right
+            div
+                padding: 35px 50px
+                box-sizing: border-box
+            img
+                display: block
+                // margin: 0 auto
+            div, img
+                height: 100%
         
