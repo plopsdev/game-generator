@@ -8,7 +8,6 @@ import Checkbox from '../../components/Checkbox';
 import Roulette from '../../components/Roulette';
 import GameCategory from '../../enums/GameCategory';
 import Status from '../../enums/Status';
-import GameStats from '../../components/GameStats';
 
 const Generator = () => {
     const [ lastGames, setLastGames ] = useState([]);
@@ -113,6 +112,48 @@ const Generator = () => {
         );
     };
 
+    const getRows = (rowCount, minRowWidthPercentage) => {
+        // minRowWidthPercentage should be the min width but I'm too bad at math to actually achieve that. The result is good enough so I don't care :)
+        if (gamesWithProbability.length === 0) return [];
+        let totalSpace = 0;
+        const games = gamesWithProbability.map((game, index) => {
+            const space = Math.max(game.probability * 100, minRowWidthPercentage) * rowCount;
+            totalSpace += space;
+            return {
+                ...game,
+                space,
+                rawSpace: space,
+                color: `hsla(${~~(360 * (index / gamesWithProbability.length))}, 80%,  45%, 0.85)`
+            }
+        });
+        // Fixing overflow on last row
+        if (totalSpace > rowCount * 100) {
+            games.forEach(game => {
+                game.space = (game.space / totalSpace) * rowCount * 100;
+                game.rawSpace = game.space;
+            });
+        }
+        const rows = [];
+        for (let i = 0; i < rowCount; i++) {
+            const row = [];
+            let spaceUsed = 0;
+            let game;
+            do {
+                game = games.shift();
+                if (!game) break;
+                spaceUsed += game.space;
+                row.push(game);
+            } while (spaceUsed < 100);
+            if (spaceUsed > 100) {
+                const leftOver = { ...game, space: spaceUsed - 100, rawSpace: game.space };
+                game.space -= leftOver.space;
+                games.unshift(leftOver);
+            }
+            rows.push(row);
+        }
+        return rows;
+    }
+
     if (!generated) {
         return (
             <div className="generator">
@@ -123,10 +164,28 @@ const Generator = () => {
                     <Button disabled={categories.length === 0} onClick={generate}>Générer !</Button>
                 </div>
                 <div className="generator__games">
+                    { getRows(5, 1.5).map((row, index) => (
+                        <div key={index} className="generator__games-row">
+                            { row.map(game => (
+                                <div key={game.id} className="generator__games-game" style={{
+                                    background: game.color,
+                                    width: `${game.space}%`,
+                                }}>
+                                    <div style={{
+                                        width: `${(game.rawSpace / game.space) * 100}%`
+                                    }}>
+                                        <img src={game.picture}></img>
+                                    </div>
+                                </div>
+                            )) }
+                        </div>
+                    )) }
+                </div>
+                {/* <div className="generator__games">
                     { gamesWithProbability.map(game => (
                         <GameStats key={game.id} game={game}></GameStats>
                     )) }
-                </div>
+                </div> */}
             </div>
         )
         
