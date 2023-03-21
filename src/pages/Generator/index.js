@@ -8,7 +8,6 @@ import Checkbox from '../../components/Checkbox';
 import Roulette from '../../components/Roulette';
 import GameCategory from '../../enums/GameCategory';
 import Status from '../../enums/Status';
-import GameStats from '../../components/GameStats';
 
 const Generator = () => {
     const [ lastGames, setLastGames ] = useState([]);
@@ -113,6 +112,34 @@ const Generator = () => {
         );
     };
 
+    const getRows = rowCount => {
+        if (gamesWithProbability.length === 0) return [];
+        const games = gamesWithProbability.map((game, index) => ({
+            ...game,
+            space: game.probability * 100 * rowCount,
+            rawSpace: game.probability * 100 * rowCount,
+            color: `hsla(${~~(360 * (index / gamesWithProbability.length))}, 80%,  45%, 0.85)`
+        }));
+        const rows = [];
+        for (let i = 0; i < rowCount; i++) {
+            const row = [];
+            let spaceUsed = 0;
+            let game;
+            do {
+                game = games.shift();
+                spaceUsed += game.space;
+                row.push(game);
+            } while (spaceUsed < 100);
+            if (spaceUsed > 100) {
+                const leftOver = { ...game, space: spaceUsed - 100, rawSpace: game.space };
+                game.space -= leftOver.space;
+                games.unshift(leftOver);
+            }
+            rows.push(row);
+        }
+        return rows;
+    }
+
     if (!generated) {
         return (
             <div className="generator">
@@ -123,10 +150,28 @@ const Generator = () => {
                     <Button disabled={categories.length === 0} onClick={generate}>Générer !</Button>
                 </div>
                 <div className="generator__games">
+                    { getRows(5).map((row, index) => (
+                        <div key={index} className="generator__gamess-row">
+                            { row.map(game => console.log(game.name, game.color) || (
+                                <div key={game.id} className="generator__game" style={{
+                                    background: game.color,
+                                    width: `${game.space}%`,
+                                }}>
+                                    <div style={{
+                                        width: `${(game.rawSpace / game.space) * 100}%`
+                                    }}>
+                                        <img src={game.picture}></img>
+                                    </div>
+                                </div>
+                            )) }
+                        </div>
+                    )) }
+                </div>
+                {/* <div className="generator__games">
                     { gamesWithProbability.map(game => (
                         <GameStats key={game.id} game={game}></GameStats>
                     )) }
-                </div>
+                </div> */}
             </div>
         )
         
