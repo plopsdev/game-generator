@@ -34,7 +34,7 @@ const Roulette = ({ randomGame, gamesWithProbability, generate, setGenerated }) 
 
     const target = useMemo(() => ({
         shownGameIndex: gamesWithProbability.findIndex(game => game.name === randomGame.name),
-        spins: getRandomInteger(2, 4),
+        spins: Math.round(getRandomInteger(2, 4) * 25 / gamesWithProbability.length),
     }), [ getRandomInteger, randomGame ]);
     
     const audio = useMemo(() => {

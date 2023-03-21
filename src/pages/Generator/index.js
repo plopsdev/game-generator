@@ -151,7 +151,6 @@ const Generator = () => {
             }
             rows.push(row);
         }
-        console.log(rows)
         return rows;
     }
 
