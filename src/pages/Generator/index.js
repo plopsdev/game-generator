@@ -169,11 +169,12 @@ const Generator = () => {
                             { row.map(game => (
                                 <div key={game.id} className="generator__games-game" style={{
                                     background: game.color,
-                                    width: `${game.space}%`,
+                                    flex: game.space,
                                 }}>
                                     <div style={{
                                         width: `${(game.rawSpace / game.space) * 100}%`
                                     }}>
+                                        <span>{ (game.probability * 100).toFixed(2) }%</span>
                                         <img src={game.picture}></img>
                                     </div>
                                 </div>
