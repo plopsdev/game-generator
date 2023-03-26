@@ -1,5 +1,7 @@
 @import '../../styles/colors'
 
+$row-height: calc((100vh - 183px) / 5 - 12px)
+
 .generator
     padding: 50px
     padding-top: 0
@@ -34,10 +36,12 @@
         &-row
             display: flex
             flex-wrap: nowrap
-            gap: 12px
             height: calc(20% - 12px)
-            &:first-child .generator__games-game:first-child div
-                float: left
+            &:first-child
+                .generator__games-game:first-child .generator__games-game-content
+                    float: left
+                .generator__games-arrow-holder:first-child div
+                    display: none
         &-game
             overflow: hidden
             vertical-align: bottom
@@ -46,9 +50,9 @@
             box-sizing: border-box
             &:first-child // Targetting all the "leftover" games
                 // border-left: 0
-                div
+                .generator__games-game-content
                     float: right
-            div
+            &-content
                 display: flex
                 align-items: center
                 padding: 30px 30px 30px 0
@@ -61,6 +65,45 @@
                     margin-right: 30px
                 img
                     display: block
-            div, img
+            &-content, img
                 height: 100%
-        
+    &__arrows
+        position: relative
+        bottom: calc(100vh - 183px)
+        &-row
+            overflow: hidden
+        &-arrow-holder
+            position: relative
+            &:first-child .arrow
+                display: none
+            .arrow
+                position: absolute
+                left: calc($row-height / -2.5)
+                height: 100%
+                div
+                    &:first-child
+                        border-width: 0 calc($row-height / 2.1) calc($row-height / 1.7) 0
+                        border-right-color: $background
+                        top: 0
+                        &::after
+                            border-width: 0 calc($row-height / 2.48) calc($row-height / 2) 0
+                            border-right-color: currentColor
+                            right: calc($row-height / -2.1)
+                    &:last-child
+                        border-width: 0 0 calc($row-height / 1.7) calc($row-height / 2.1)
+                        border-bottom-color: $background
+                        bottom: 0
+                        &::after
+                            border-width: 0 0 calc($row-height / 2) calc($row-height / 2.48)
+                            border-bottom-color: currentColor
+                            right: 0
+                            bottom: calc($row-height / -1.7)
+                    &::after
+                        content: ''
+                        z-index: 1
+                div, div::after
+                    position: absolute
+                    height: 0
+                    width: 0
+                    border-style: solid
+                    border-color: transparent

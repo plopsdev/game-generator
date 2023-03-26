@@ -123,7 +123,7 @@ const Generator = () => {
                 ...game,
                 space,
                 rawSpace: space,
-                color: `hsla(${~~(360 * (index / gamesWithProbability.length))}, 80%,  45%, 0.85)`
+                color: `hsl(${~~(360 * (index / gamesWithProbability.length))}, 63%,  51%)`
             }
         });
         // Fixing overflow on last row
@@ -153,6 +153,8 @@ const Generator = () => {
         }
         return rows;
     }
+    
+    const rows = getRows(5, 1.5);
 
     if (!generated) {
         return (
@@ -164,18 +166,35 @@ const Generator = () => {
                     <Button disabled={categories.length === 0} onClick={generate}>Générer !</Button>
                 </div>
                 <div className="generator__games">
-                    { getRows(5, 1.5).map((row, index) => (
+                    { rows.map((row, index) => (
                         <div key={index} className="generator__games-row">
                             { row.map(game => (
                                 <div key={game.id} className="generator__games-game" style={{
                                     background: game.color,
                                     flex: game.space,
                                 }}>
-                                    <div style={{
+                                    <div className="generator__games-game-content" style={{
                                         width: `${(game.rawSpace / game.space) * 100}%`
                                     }}>
                                         <span>{ (game.probability * 100).toFixed(2) }%</span>
                                         <img src={game.picture}></img>
+                                    </div>
+                                </div>
+                            )) }
+                        </div>
+                    )) }
+                </div>
+                <div className="generator__games generator__arrows">
+                    { rows.map((row, index) => (
+                        <div key={index} className="generator__games-row generator__arrows-row">
+                            { row.map(game => (
+                                <div key={game.id} className="generator__arrows-arrow-holder" style={{
+                                    color: game.color,
+                                    flex: game.space,
+                                }}>
+                                    <div className="arrow">
+                                        <div></div>
+                                        <div></div>
                                     </div>
                                 </div>
                             )) }
