@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Status from '../../enums/Status';
 import {firebase} from '../../firebase';
+import RiggedGames from '../../enums/RiggedGames';
 
 export const getGamesForGeneratorThunk = createAsyncThunk(
     'firebase/getGamesForGenerator',
@@ -23,6 +24,8 @@ export const getGamesForGeneratorThunk = createAsyncThunk(
             let rating = doc.data();
             ratings.push(rating);
         });
+
+        ratings.push({ gameId: RiggedGames.PRINCES, rating: 0 });
         
         return {
             games,

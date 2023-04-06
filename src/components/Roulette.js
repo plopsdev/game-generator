@@ -4,6 +4,7 @@ import { antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, dorian_pom
 import './Roulette.sass';
 import Button from './Button';
 import { getRandomInteger } from '../utils/numbers';
+import RiggedGames from '../enums/RiggedGames';
 
 const animations = [
     antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, do_claques, dorian_pompes, jojo_danse, jojo_detergeant, jojo_ordi, jojomi_danse, mich_content, mich_danse, mich_dodo, mojito, zoe, ecademy
@@ -73,17 +74,21 @@ const Roulette = ({ randomGame, gamesWithProbability, generate, setGenerated }) 
         if (!audio) return;
         audio.play();
     }, [ audio ]);
+    
+    const shownPicture = !targetReached && gamesWithProbability[state.shownGameIndex].id === RiggedGames.PRINCES
+        ? gamesWithProbability[getRandomInteger(0, gamesWithProbability.length - 1)].picture
+        : gamesWithProbability[state.shownGameIndex].picture;
 
     return (
         <div className="roulette" style={{ backgroundImage: `url(${animationUrl})` }}>
             <div className="roulette__content">
-                <img src={gamesWithProbability[state.shownGameIndex].picture}/>
+                <img src={shownPicture}/>
                 { targetReached && (
                     <div className="roulette__buttons">
                         <Button onClick={() => { setGenerated(false); audio.pause() }}>
                             RETOUR À LA ROULETTE
                         </Button>
-                        <Button onClick={generate}>
+                        <Button onMouseDown={generate}>
                             Générer !
                         </Button>
                     </div>

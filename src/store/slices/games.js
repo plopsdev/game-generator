@@ -18,6 +18,7 @@ export const getGamesThunk = createAsyncThunk(
         notes.forEach((note) => {
             notesList.push(note.data());
         });
+
         //moyen d'intégrer le filtre directement dans le foreach pour conserver que les notes qui nous intéressent
         for (let note of notesList) {
             if (note.uId === uId) {
@@ -28,7 +29,8 @@ export const getGamesThunk = createAsyncThunk(
                 }
             }
         }
-        return gamesList;
+
+        return gamesList.filter(game => game.id !== 'princesdelarene');
     }
 );
 
