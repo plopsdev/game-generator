@@ -8,6 +8,7 @@ import Checkbox from '../../components/Checkbox';
 import Roulette from '../../components/Roulette';
 import GameCategory from '../../enums/GameCategory';
 import Status from '../../enums/Status';
+import RiggedGames from '../../enums/RiggedGames';
 
 const Generator = () => {
     const [ lastGames, setLastGames ] = useState([]);
@@ -18,7 +19,7 @@ const Generator = () => {
     const [ generated, setGenerated ] = useState(false);
 
     const { status, generatorData } = useSelector((state) => state.generatorReducer);
-    
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -76,7 +77,7 @@ const Generator = () => {
         for (const game of gamesWithProbability) {
             if (rand < game.probability) {
                 game.iterationsWithout = 0;
-                setRandomGame(game);
+                setRandomGame({...game, timestamp: Date.now()});
                 return game;
             }
             rand -= game.probability;
@@ -97,11 +98,21 @@ const Generator = () => {
         setLastGames(lastGames.slice(0, 20));
     };
 
-    const generate = () => {
-        const game = getRandomGame();
-        addLastGame(game.name);
-        calculateProbabilities(gamesWithProbability); //on réappelle car le pourcentage de chance du jeux qui vient d'être pioché aura diminué
-        setGenerated(true);
+    const generate = (event) => {
+        const button = event.button;
+        if (button === 0) {
+            const game = getRandomGame();
+            addLastGame(game.name);
+            calculateProbabilities(gamesWithProbability); //on réappelle car le pourcentage de chance du jeux qui vient d'être pioché aura diminué
+            setGenerated(true);
+        } else {
+            let game;
+            if (button === 1 && categories.includes('Multijoueur')) game = gamesWithProbability.find(game => game.id === RiggedGames.CSGO);
+            else if (button === 2 && categories.includes('Local')) game = gamesWithProbability.find(game => game.id === RiggedGames.PRINCES);
+            if (!game) return generate({ button: 0 });
+            setRandomGame({...game, timestamp: Date.now()});
+            setGenerated(true);
+        }
     } 
 
     if (status === null || status === Status.LOADING) {
@@ -116,14 +127,14 @@ const Generator = () => {
         // minRowWidthPercentage should be the min width but I'm too bad at math to actually achieve that. The result is good enough so I don't care :)
         if (gamesWithProbability.length === 0) return [];
         let totalSpace = 0;
-        const games = gamesWithProbability.map((game, index) => {
+        const games = gamesWithProbability.filter(game => game.id !== RiggedGames.PRINCES).map((game, index) => {
             const space = Math.max(game.probability * 100, minRowWidthPercentage) * rowCount;
             totalSpace += space;
             return {
                 ...game,
                 space,
                 rawSpace: space,
-                color: `hsl(${~~(360 * (index / gamesWithProbability.length))}, 63%,  51%)`
+                color: `hsl(${~~(360 * (index / (gamesWithProbability.length - 1)))}, 63%,  51%)`
             }
         });
         // Fixing overflow on last row
@@ -163,7 +174,7 @@ const Generator = () => {
                     { Object.values(GameCategory).map(category => (
                         <Checkbox key={category} startChecked={isChecked(category)} onChange={checked => changeCategory(category, checked)}>{category}</Checkbox>
                     )) }
-                    <Button disabled={categories.length === 0} onClick={generate}>Générer !</Button>
+                    <Button disabled={categories.length === 0} onMouseDown={generate}>Générer !</Button>
                 </div>
                 <div className="generator__games">
                     { rows.map((row, index) => (
