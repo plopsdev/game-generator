@@ -26,7 +26,7 @@ export const getGamesForGeneratorThunk = createAsyncThunk(
         });
 
         ratings.push({ gameId: RiggedGames.PRINCES, rating: 0 });
-        
+
         return {
             games,
             ratings,

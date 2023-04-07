@@ -80,7 +80,7 @@ const Roulette = ({ randomGame, gamesWithProbability, generate, setGenerated }) 
         : gamesWithProbability[state.shownGameIndex].picture;
 
     return (
-        <div className="roulette" style={{ backgroundImage: `url(${animationUrl})` }}>
+        <div className="roulette" style={{ backgroundImage: `url(${animationUrl})` }} onContextMenu={event => event.preventDefault()}>
             <div className="roulette__content">
                 <img src={shownPicture}/>
                 { targetReached && (
