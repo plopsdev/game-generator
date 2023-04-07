@@ -5,27 +5,13 @@ import './Roulette.sass';
 import Button from './Button';
 import { getRandomInteger } from '../utils/numbers';
 import RiggedGames from '../enums/RiggedGames';
+import { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o } from '../assets/audio';
 
 const animations = [
     antoine_souleve_damien, baffes, boite_de_nuit, damien_danse, do_claques, dorian_pompes, jojo_danse, jojo_detergeant, jojo_ordi, jojomi_danse, mich_content, mich_danse, mich_dodo, mojito, zoe, ecademy
 ];
-const songs = [
-    'https://media1.vocaroo.com/mp3/1maiZIj3u1f9',
-    'https://media1.vocaroo.com/mp3/1iqXY0PHc422',
-    'https://media1.vocaroo.com/mp3/19lmPL3j54zf',
-    'https://media1.vocaroo.com/mp3/12bzJgNgor52',
-    'https://media1.vocaroo.com/mp3/1fJvqWQvsM7L',
-    'https://media1.vocaroo.com/mp3/15eJjBhnlIy1',
-    'https://media1.vocaroo.com/mp3/1j8MDKcvFidQ',
-    'https://media1.vocaroo.com/mp3/1hixyEOdqUHR',
-    'https://media1.vocaroo.com/mp3/1cgnZbnj7MuU',
-    'https://media1.vocaroo.com/mp3/1jpq3QKW2S66',
-    'https://media1.vocaroo.com/mp3/1dzAP9WgKpoG',
-    'https://media1.vocaroo.com/mp3/1opi2mi1oKe3',
-    'https://media1.vocaroo.com/mp3/16TXWiGZdnKj',
-    'https://media1.vocaroo.com/mp3/1nsqwUk1qAPt',
-    'https://media1.vocaroo.com/mp3/17O6SFjaL2KC'
-];
+
+const songs = [ a, b, c, d, e, f, g, h, i, j, k, l, m, n, o ];
 
 const Roulette = ({ randomGame, gamesWithProbability, generate, setGenerated }) => {
     const [ state, setState ] = useState({
@@ -88,7 +74,7 @@ const Roulette = ({ randomGame, gamesWithProbability, generate, setGenerated }) 
                         <Button onClick={() => { setGenerated(false); audio.pause() }}>
                             RETOUR À LA ROULETTE
                         </Button>
-                        <Button onMouseDown={generate}>
+                        <Button onMouseDown={event => { audio.pause(); generate(event) }}>
                             Générer !
                         </Button>
                     </div>
